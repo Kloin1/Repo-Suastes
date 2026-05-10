@@ -38,3 +38,15 @@ class AppINIFED:
         
         self.cargar_icono_desde_url()
         self.pantalla_bienvenida()
+     def cargar_icono_desde_url(self):
+        url_imagen = "https://z-cdn-media.chatglm.cn/files/4da1d2cd-d4cb-47a7-9d7b-ccf1eed79a6b.jpg?auth_key=1878435784-6719940e8477484f826e2e0a48557a3b-0-a1077fa7c662ab264ec13026728ebb00"
+        try:
+            with urllib.request.urlopen(url_imagen) as response:
+                datos_imagen = response.read()
+            imagen = Image.open(io.BytesIO(datos_imagen))
+            imagen = imagen.resize((64, 64), Image.Resampling.LANCZOS)
+            icono_tk = ImageTk.PhotoImage(imagen)
+            self.root.iconphoto(False, icono_tk)
+            self.icono_referencia = icono_tk
+        except Exception as e:
+            print(f"No se pudo cargar el icono: {e}")

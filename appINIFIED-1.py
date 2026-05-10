@@ -50,3 +50,30 @@ class AppINIFED:
             self.icono_referencia = icono_tk
         except Exception as e:
             print(f"No se pudo cargar el icono: {e}")
+     def pantalla_bienvenida(self):
+        color_fondo = "#102A43"
+        self.frame_bienvenida = tk.Frame(self.root, bg=color_fondo) 
+        self.frame_bienvenida.place(relx=0, rely=0, relwidth=1, relheight=1)
+        
+        frame_sombra = tk.Frame(self.frame_bienvenida, bg="#0A1929", padx=6, pady=6)
+        frame_sombra.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        frame_card = tk.Frame(frame_sombra, bg="#FFFFFF", padx=80, pady=50)
+        frame_card.pack()
+        
+        lbl_icono = tk.Label(frame_card, text="📈", bg="#FFFFFF", font=("Segoe UI", 70))
+        lbl_icono.pack()
+        lbl_texto = tk.Label(frame_card, text="INIFED", bg="#FFFFFF", fg=color_fondo, font=("Segoe UI", 38, "bold"))
+        lbl_texto.pack(pady=(15, 0))
+        lbl_sub = tk.Label(frame_card, text="Análisis de Infraestructura Educativa", bg="#FFFFFF", fg="#546E7A", font=("Segoe UI", 12))
+        lbl_sub.pack(pady=(0, 30))
+        lbl_status = tk.Label(frame_card, text="Cargando módulos, por favor espere...", bg="#FFFFFF", fg="#90A4AE", font=("Segoe UI", 10))
+        lbl_status.pack(pady=(0, 25))
+        
+        progress_bg = tk.Frame(frame_card, bg="#ECEFF1", padx=3, pady=3)
+        progress_bg.pack()
+        self.progress_container = tk.Frame(progress_bg, bg="#ECEFF1", width=350, height=10)
+        self.progress_container.pack_propagate(False)
+        self.progress_container.pack()
+        self.barra_progreso = tk.Frame(self.progress_container, bg="#1565C0", width=0, height=10)
+        self.barra_progreso.place(x=0, y=0, relheight=1.0, width=0)
+        self.animar_carga(0)

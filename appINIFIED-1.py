@@ -184,3 +184,41 @@ class AppINIFED:
             self.panel_dinamico.destroy()
         self.panel_dinamico = tk.Frame(self.frame_contenido_base, bg="#F0F2F5")
         self.panel_dinamico.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+    def mostrar_vista_seleccion_comparador(self):
+        self.limpiar_panel_dinamico()
+        
+        frame_card = tk.Frame(self.panel_dinamico, bg="#FFFFFF", highlightbackground="#E0E0E0", highlightthickness=1, padx=40, pady=40)
+        frame_card.place(relx=0.5, rely=0.45, anchor=tk.CENTER)
+        
+        lbl_titulo = tk.Label(frame_card, text="Comparador de Gráficas", bg="#FFFFFF", fg="#5E35B1", font=("Segoe UI", 24, "bold"))
+        lbl_titulo.pack(pady=(0, 5))
+        
+        lbl_inst = tk.Label(frame_card, text="Selecciona exactamente 2 gráficas para comparar:", bg="#FFFFFF", fg="#757575", font=("Segoe UI", 12))
+        lbl_inst.pack(pady=(0, 30))
+        
+        # Variables para los Checkbuttons
+        self.var_barras_int = tk.IntVar()
+        self.var_barras_beb = tk.IntVar()
+        self.var_pastel_int = tk.IntVar()
+        self.var_pastel_beb = tk.IntVar()
+        
+        # Guardamos las variables y widgets para la lógica de bloqueo
+        self.opciones_check = [
+            (self.var_barras_int, "📊 Barras: Internet"),
+            (self.var_barras_beb, "💧 Barras: Bebedero"),
+            (self.var_pastel_int, "🥧 Pastel: Internet"),
+            (self.var_pastel_beb, "🥧 Pastel: Bebedero")
+        ]
+        
+        self.checks_widgets = []
+        frame_checks = tk.Frame(frame_card, bg="#FFFFFF")
+        frame_checks.pack()
+        
+        for i, (var, texto) in enumerate(self.opciones_check):
+            row, col = divmod(i, 2) # Grid de 2x2
+            cb = tk.Checkbutton(frame_checks, text=texto, variable=var, bg="#FFFFFF", fg="#333333", selectcolor="#EDE7F6", font=("Segoe UI", 13), activebackground="#FFFFFF", command=self.controlar_limite_seleccion)
+            cb.grid(row=row, column=col, padx=40, pady=15, sticky="w")
+            self.checks_widgets.append((var, cb))
+            
+        self.btn_generar_comp = tk.Button(frame_card, text="Generar Comparación", bg="#5E35B1", fg="white", state=tk.DISABLED, font=("Segoe UI", 13, "bold"), bd=0, padx=20, pady=10, cursor="hand2", activebackground="#4527A0")
+        self.btn_generar_comp.pack(pady=(30, 0))

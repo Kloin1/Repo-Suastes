@@ -292,4 +292,11 @@ class AppINIFED:
         titulo = f"{estilo_grafica.capitalize()} de {tipo.capitalize()}"
         if messagebox.askyesno("Confirmación", f"¿Desea generar: {titulo}?", icon=messagebox.QUESTION):
             self.mostrar_vista_individual(tipo, estilo_grafica)
+    def mostrar_confirmacion_comparar(self):
+        if not self.datos_procesados:
+            messagebox.showwarning("Sin Datos", "no hay csv disponible, carga tu csv para que se muestren las graficas")
+            return
+        if messagebox.askyesno("Confirmación", "¿Desea generar la vista comparativa de las 4 gráficas?", icon=messagebox.QUESTION):
+            self.mostrar_vista_comparar()
+    
 

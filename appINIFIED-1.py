@@ -249,4 +249,25 @@ class AppINIFED:
         
         if len(seleccionadas) == 2:
             self.mostrar_vista_comparacion_personalizada(seleccionadas)
+    def mostrar_vista_comparacion_personalizada(self, seleccionadas):
+        """Dibuja 2 gráficas en paralelo (1 fila, 2 columnas) y agrega el footer."""
+        self.limpiar_panel_dinamico()
+        # Reutilizamos el footer pasando True para que aparezca "Dejar de comparar"
+        self.agregar_footer(es_comparacion=True)
+        
+        frame_grid = tk.Frame(self.panel_dinamico, bg="#F0F2F5")
+        frame_grid.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        frame_grid.columnconfigure(0, weight=1)
+        frame_grid.columnconfigure(1, weight=1)
+        frame_grid.rowconfigure(0, weight=1)
+        
+        for i, (tipo, estilo) in enumerate(seleccionadas):
+            card = tk.Frame(frame_grid, bg="#FFFFFF", highlightbackground="#E0E0E0", highlightthickness=1)
+            card.grid(row=0, column=i, padx=5, pady=5, sticky="nsew")
+            
+            if estilo == "barra":
+                self.crear_grafica_barras(card, tipo)
+            else:
+                self.crear_grafica_pastel(card, tipo)
 

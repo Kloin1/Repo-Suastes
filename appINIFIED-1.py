@@ -38,7 +38,7 @@ class AppINIFED:
         
         self.cargar_icono_desde_url()
         self.pantalla_bienvenida()
-     def cargar_icono_desde_url(self):
+    def cargar_icono_desde_url(self):
         url_imagen = "https://z-cdn-media.chatglm.cn/files/4da1d2cd-d4cb-47a7-9d7b-ccf1eed79a6b.jpg?auth_key=1878435784-6719940e8477484f826e2e0a48557a3b-0-a1077fa7c662ab264ec13026728ebb00"
         try:
             with urllib.request.urlopen(url_imagen) as response:
@@ -50,7 +50,7 @@ class AppINIFED:
             self.icono_referencia = icono_tk
         except Exception as e:
             print(f"No se pudo cargar el icono: {e}")
-     def pantalla_bienvenida(self):
+    def pantalla_bienvenida(self):
         color_fondo = "#102A43"
         self.frame_bienvenida = tk.Frame(self.root, bg=color_fondo) 
         self.frame_bienvenida.place(relx=0, rely=0, relwidth=1, relheight=1)
@@ -77,3 +77,10 @@ class AppINIFED:
         self.barra_progreso = tk.Frame(self.progress_container, bg="#1565C0", width=0, height=10)
         self.barra_progreso.place(x=0, y=0, relheight=1.0, width=0)
         self.animar_carga(0)
+    def animar_carga(self, paso):
+        if paso <= 40:
+            ancho = (paso / 40.0) * 350
+            self.barra_progreso.place(x=0, y=0, relheight=1.0, width=ancho)
+            self.root.after(80, self.animar_carga, paso + 1)
+        else:
+            self.inicializar_interfaz_principal()

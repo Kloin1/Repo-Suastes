@@ -366,3 +366,20 @@ class AppINIFED:
         frame_tarjeta.pack(fill=tk.BOTH, expand=True)
         if estilo_grafica == "barra": self.crear_grafica_barras(frame_tarjeta, tipo)
         else: self.crear_grafica_pastel(frame_tarjeta, tipo)
+    def mostrar_vista_comparar(self):
+        self.limpiar_panel_dinamico()
+        self.agregar_footer(es_comparacion=True)
+        frame_grid = tk.Frame(self.panel_dinamico, bg="#F0F2F5")
+        frame_grid.pack(fill=tk.BOTH, expand=True)
+        frame_grid.columnconfigure(0, weight=1); frame_grid.columnconfigure(1, weight=1)
+        frame_grid.rowconfigure(0, weight=1); frame_grid.rowconfigure(1, weight=1)
+        cards = []
+        for r in range(2):
+            for c in range(2):
+                card = tk.Frame(frame_grid, bg="#FFFFFF", highlightbackground="#E0E0E0", highlightthickness=1)
+                card.grid(row=r, column=c, padx=5, pady=5, sticky="nsew")
+                cards.append(card)
+        self.crear_grafica_barras(cards[0], "internet")
+        self.crear_grafica_pastel(cards[1], "internet")
+        self.crear_grafica_barras(cards[2], "bebedero")
+        self.crear_grafica_pastel(cards[3], "bebedero")

@@ -342,3 +342,20 @@ class AppINIFED:
         canvas = FigureCanvasTkAgg(fig, master=master_frame)
         canvas.draw()
         canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+    def agregar_footer(self, es_comparacion=False):
+        frame_inferior = tk.Frame(self.panel_dinamico, bg="#FFFFFF", pady=10)
+        frame_inferior.pack(side=tk.BOTTOM, fill=tk.X)
+        sep = tk.Frame(frame_inferior, bg="#E0E0E0", height=1)
+        sep.pack(fill=tk.X, pady=(0, 10))
+        lbl_periodo = tk.Label(frame_inferior, text="Periodo: 2020-2022", bg="#FFFFFF", fg="#9E9E9E", font=("Segoe UI", 9, "italic"))
+        lbl_periodo.pack(side=tk.LEFT, padx=20)
+        frame_botones = tk.Frame(frame_inferior, bg="#FFFFFF")
+        frame_botones.pack(side=tk.RIGHT, padx=20)
+        estilo_btn = {"font": ("Segoe UI", 10, "bold"), "bd": 0, "cursor": "hand2", "activeforeground": "white", "padx": 15, "pady": 6}
+        if es_comparacion:
+            btn_dejar = tk.Button(frame_botones, text="🛑 Dejar de comparar", bg="#E53935", fg="white", activebackground="#C62828", command=self.mostrar_vista_menu, **estilo_btn)
+            btn_dejar.grid(row=0, column=0, padx=(0, 10))
+        btn_volver = tk.Button(frame_botones, text="⬅️ Volver al Menú", bg="#757575", fg="white", activebackground="#616161", command=self.mostrar_vista_menu, **estilo_btn)
+        btn_volver.grid(row=0, column=1, padx=(0, 10))
+        btn_exportar = tk.Button(frame_botones, text="💾 Exportar Gráficas", bg="#43A047", fg="white", activebackground="#2E7D32", command=self.exportar_graficas, **estilo_btn)
+        btn_exportar.grid(row=0, column=2)

@@ -315,4 +315,16 @@ class AppINIFED:
         ax.grid(axis='y', linestyle='--', alpha=0.5)
         barras = ax.bar(['Rural', 'Urbano'], [0, 0], color=['#8D6E63', '#42A5F5'], width=0.5)
         textos = [ax.text(b.get_x() + b.get_width()/2.0, 0, "0", ha='center', va='bottom', fontweight='bold', fontsize=12, color='#333333') for b in barras]
-
+        def actualizar(frame):
+            progreso = (frame + 1) / 40.0 
+            for i, (barra, val) in enumerate(zip(barras, valores)):
+                altura = val * progreso
+                barra.set_height(altura)
+                textos[i].set_position((barra.get_x() + barra.get_width()/2.0, altura + max_val * 0.02))
+                textos[i].set_text(int(altura))
+        anim = animation.FuncAnimation(fig, actualizar, frames=40, interval=30, blit=False, repeat=False)
+        self.anims_activas.append(anim)
+        self.figuras_activas.append(fig)
+        canvas = FigureCanvasTkAgg(fig, master=master_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)

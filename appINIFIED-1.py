@@ -298,5 +298,7 @@ class AppINIFED:
             return
         if messagebox.askyesno("Confirmación", "¿Desea generar la vista comparativa de las 4 gráficas?", icon=messagebox.QUESTION):
             self.mostrar_vista_comparar()
-    
+    def obtener_valores(self, tipo):
+        if tipo == "internet": return [self.internet_rural, self.internet_urbano], "Internet"
+        else: return [self.bebedero_rural, self.bebedero_urbano], "Bebedero"
 

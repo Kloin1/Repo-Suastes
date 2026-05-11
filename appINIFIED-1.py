@@ -282,4 +282,7 @@ class AppINIFED:
         lbl_aviso.pack(expand=True)
         btn_salir = tk.Button(frame_centro, text="🚪  Salir de la aplicación", font=("Segoe UI", 11, "bold"), bg="#E53935", fg="white", bd=0, cursor="hand2", activebackground="#C62828", activeforeground="white", command=self.confirmar_salida, width=25, pady=5)
         btn_salir.pack(pady=(0, 20))
+    def confirmar_salida(self):
+        if messagebox.askyesno("Confirmar Salida", "¿Está seguro de que desea cerrar la aplicación?", icon=messagebox.WARNING):
+            self.root.destroy()
 

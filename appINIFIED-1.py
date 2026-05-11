@@ -270,4 +270,16 @@ class AppINIFED:
                 self.crear_grafica_barras(card, tipo)
             else:
                 self.crear_grafica_pastel(card, tipo)
+    def mostrar_vista_menu(self):
+        self.limpiar_panel_dinamico()
+        frame_centro = tk.Frame(self.panel_dinamico, bg="#FFFFFF", highlightbackground="#E0E0E0", highlightthickness=1)
+        frame_centro.place(relx=0.5, rely=0.4, anchor=tk.CENTER, width=500, height=200)
+        
+        if not self.datos_procesados:
+            lbl_aviso = tk.Label(frame_centro, text="No hay datos disponibles.\nUsa 'Cargar CSV' para comenzar.", bg="#FFFFFF", fg="#757575", font=("Segoe UI", 12), justify=tk.CENTER)
+        else:
+            lbl_aviso = tk.Label(frame_centro, text="✅ Datos listos\nSelecciona una opción en el menú lateral", bg="#FFFFFF", fg="#2E7D32", font=("Segoe UI", 13, "bold"), justify=tk.CENTER)
+        lbl_aviso.pack(expand=True)
+        btn_salir = tk.Button(frame_centro, text="🚪  Salir de la aplicación", font=("Segoe UI", 11, "bold"), bg="#E53935", fg="white", bd=0, cursor="hand2", activebackground="#C62828", activeforeground="white", command=self.confirmar_salida, width=25, pady=5)
+        btn_salir.pack(pady=(0, 20))
 

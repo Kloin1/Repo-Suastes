@@ -222,3 +222,17 @@ class AppINIFED:
             
         self.btn_generar_comp = tk.Button(frame_card, text="Generar Comparación", bg="#5E35B1", fg="white", state=tk.DISABLED, font=("Segoe UI", 13, "bold"), bd=0, padx=20, pady=10, cursor="hand2", activebackground="#4527A0")
         self.btn_generar_comp.pack(pady=(30, 0))
+    def controlar_limite_seleccion(self):
+        """Bloquea las casillas no seleccionadas cuando ya hay 2 elegidas."""
+        seleccionadas = sum(var.get() for var, cb in self.checks_widgets)
+        
+        if seleccionadas == 2:
+            # Habilitar solo la que está marcada, deshabilitar las demás
+            for var, cb in self.checks_widgets:
+                cb.configure(state=tk.NORMAL if var.get() == 1 else tk.DISABLED)
+            self.btn_generar_comp.configure(state=tk.NORMAL, command=self.ejecutar_comparacion_personalizada)
+        else:
+            # Si hay 0 o 1, habilitar todas y botón deshabilitado
+            for var, cb in self.checks_widgets:
+                cb.configure(state=tk.NORMAL)
+            self.btn_generar_comp.configure(state=tk.DISABLED)

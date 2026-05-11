@@ -285,4 +285,11 @@ class AppINIFED:
     def confirmar_salida(self):
         if messagebox.askyesno("Confirmar Salida", "¿Está seguro de que desea cerrar la aplicación?", icon=messagebox.WARNING):
             self.root.destroy()
+    def mostrar_confirmacion(self, tipo, estilo_grafica):
+        if not self.datos_procesados:
+            messagebox.showwarning("Sin Datos", "no hay csv disponible, carga tu csv para que se muestren las graficas")
+            return
+        titulo = f"{estilo_grafica.capitalize()} de {tipo.capitalize()}"
+        if messagebox.askyesno("Confirmación", f"¿Desea generar: {titulo}?", icon=messagebox.QUESTION):
+            self.mostrar_vista_individual(tipo, estilo_grafica)
 

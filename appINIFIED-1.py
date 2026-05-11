@@ -301,4 +301,18 @@ class AppINIFED:
     def obtener_valores(self, tipo):
         if tipo == "internet": return [self.internet_rural, self.internet_urbano], "Internet"
         else: return [self.bebedero_rural, self.bebedero_urbano], "Bebedero"
+    def crear_grafica_barras(self, master_frame, tipo):
+        valores, nombre = self.obtener_valores(tipo)
+        fig, ax = plt.subplots(figsize=(6, 5), dpi=100)
+        fig.patch.set_facecolor('#FFFFFF')
+        ax.set_title(f'Barras: {nombre}', fontsize=14, fontweight='bold', pad=15, color='#333333')
+        ax.set_ylabel('Cantidad de Escuelas', fontsize=11, color='#555555')
+        ax.tick_params(axis='both', labelsize=10, colors='#555555')
+        ax.spines['top'].set_visible(False); ax.spines['right'].set_visible(False)
+        ax.spines['left'].set_color('#CCCCCC'); ax.spines['bottom'].set_color('#CCCCCC')
+        max_val = max(valores) if max(valores) > 0 else 1
+        ax.set_ylim(0, max_val * 1.25)
+        ax.grid(axis='y', linestyle='--', alpha=0.5)
+        barras = ax.bar(['Rural', 'Urbano'], [0, 0], color=['#8D6E63', '#42A5F5'], width=0.5)
+        textos = [ax.text(b.get_x() + b.get_width()/2.0, 0, "0", ha='center', va='bottom', fontweight='bold', fontsize=12, color='#333333') for b in barras]
 

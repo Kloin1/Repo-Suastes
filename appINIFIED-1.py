@@ -359,3 +359,10 @@ class AppINIFED:
         btn_volver.grid(row=0, column=1, padx=(0, 10))
         btn_exportar = tk.Button(frame_botones, text="💾 Exportar Gráficas", bg="#43A047", fg="white", activebackground="#2E7D32", command=self.exportar_graficas, **estilo_btn)
         btn_exportar.grid(row=0, column=2)
+    def mostrar_vista_individual(self, tipo, estilo_grafica):
+        self.limpiar_panel_dinamico()
+        self.agregar_footer(es_comparacion=False)
+        frame_tarjeta = tk.Frame(self.panel_dinamico, bg="#FFFFFF", highlightbackground="#E0E0E0", highlightthickness=1)
+        frame_tarjeta.pack(fill=tk.BOTH, expand=True)
+        if estilo_grafica == "barra": self.crear_grafica_barras(frame_tarjeta, tipo)
+        else: self.crear_grafica_pastel(frame_tarjeta, tipo)

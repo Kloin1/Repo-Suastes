@@ -236,3 +236,17 @@ class AppINIFED:
             for var, cb in self.checks_widgets:
                 cb.configure(state=tk.NORMAL)
             self.btn_generar_comp.configure(state=tk.DISABLED)
+    def ejecutar_comparacion_personalizada(self):
+        """Obtiene las 2 gráficas seleccionadas y las manda a dibujar."""
+        mapeo = [
+            (self.var_barras_int, "internet", "barra"),
+            (self.var_barras_beb, "bebedero", "barra"),
+            (self.var_pastel_int, "internet", "pastel"),
+            (self.var_pastel_beb, "bebedero", "pastel")
+        ]
+        
+        seleccionadas = [(tipo, estilo) for var, tipo, estilo in mapeo if var.get() == 1]
+        
+        if len(seleccionadas) == 2:
+            self.mostrar_vista_comparacion_personalizada(seleccionadas)
+

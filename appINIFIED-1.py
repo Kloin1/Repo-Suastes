@@ -383,3 +383,19 @@ class AppINIFED:
         self.crear_grafica_pastel(cards[1], "internet")
         self.crear_grafica_barras(cards[2], "bebedero")
         self.crear_grafica_pastel(cards[3], "bebedero")
+    def exportar_graficas(self):
+        if not self.figuras_activas: return
+        archivo_base = filedialog.asksaveasfilename(defaultextension=".png", initialfile="grafica_INIFED.png", filetypes=[("PNG", "*.png")])
+        if archivo_base:
+            try:
+                for i, fig in enumerate(self.figuras_activas):
+                    nombre = archivo_base.replace(".png", f"_{i+1}.png")
+                    fig.savefig(nombre, bbox_inches='tight', facecolor='white')
+                messagebox.showinfo("Éxito", f"Se exportaron {len(self.figuras_activas)} gráfica(s) correctamente.")
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo guardar: {e}")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = AppINIFED(root)
+    root.mainloop()

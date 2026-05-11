@@ -84,3 +84,91 @@ class AppINIFED:
             self.root.after(80, self.animar_carga, paso + 1)
         else:
             self.inicializar_interfaz_principal()
+    def inicializar_interfaz_principal(self):
+        self.frame_bienvenida.destroy()
+        self.root.columnconfigure(0, weight=0, minsize=260) 
+        self.root.columnconfigure(1, weight=1)              
+        self.root.rowconfigure(0, weight=1)                  
+
+        self.frame_nav = tk.Frame(self.root, bg="#FFFFFF", padx=20, pady=25, highlightbackground="#E0E0E0", highlightthickness=1)
+        self.frame_nav.grid(row=0, column=0, sticky="ns")
+        
+        lbl_logo = tk.Label(self.frame_nav, text="INIFED", bg="#FFFFFF", fg="#102A43", font=("Segoe UI", 20, "bold"))
+        lbl_logo.pack(pady=(0, 30), anchor="w")
+        
+        color_azul = "#0D47A1"
+        frame_panel_azul = tk.Frame(self.frame_nav, bg=color_azul, padx=15, pady=15)
+        frame_panel_azul.pack(fill=tk.X, pady=(0, 15))
+        lbl_t1 = tk.Label(frame_panel_azul, text="GRÁFICAS DE BARRAS", bg=color_azul, fg="#90CAF9", font=("Segoe UI", 9, "bold"))
+        lbl_t1.pack(anchor="w", pady=(0, 10))
+        
+        estilo_sidebar = {"font": ("Segoe UI", 11), "height": 2, "bd": 0, "cursor": "hand2", "activeforeground": "white", "width": 22, "anchor": "w", "pady": 4, "padx": 10}
+        color_gris = "#90A4AE"
+        
+        self.btn_internet = tk.Button(frame_panel_azul, text="📊  Internet (Barras)", bg=color_gris, fg="white", activebackground=color_gris, state=tk.DISABLED, command=lambda: self.mostrar_confirmacion("internet", "barra"), **estilo_sidebar)
+        self.btn_internet.pack(fill=tk.X, pady=(0, 5))
+        self.btn_bebedero = tk.Button(frame_panel_azul, text="💧  Bebedero (Barras)", bg=color_gris, fg="white", activebackground=color_gris, state=tk.DISABLED, command=lambda: self.mostrar_confirmacion("bebedero", "barra"), **estilo_sidebar)
+        self.btn_bebedero.pack(fill=tk.X)
+
+        color_rosa = "#AD1457"
+        frame_panel_rosa = tk.Frame(self.frame_nav, bg=color_rosa, padx=15, pady=15)
+        frame_panel_rosa.pack(fill=tk.X, pady=(0, 15))
+        lbl_t2 = tk.Label(frame_panel_rosa, text="GRÁFICAS DE PASTEL", bg=color_rosa, fg="#F48FB1", font=("Segoe UI", 9, "bold"))
+        lbl_t2.pack(anchor="w", pady=(0, 10))
+        
+        self.btn_pastel_internet = tk.Button(frame_panel_rosa, text="🥧  Internet (Pastel)", bg=color_gris, fg="white", activebackground=color_gris, state=tk.DISABLED, command=lambda: self.mostrar_confirmacion("internet", "pastel"), **estilo_sidebar)
+        self.btn_pastel_internet.pack(fill=tk.X, pady=(0, 5))
+        self.btn_pastel_bebedero = tk.Button(frame_panel_rosa, text="🥧  Bebedero (Pastel)", bg=color_gris, fg="white", activebackground=color_gris, state=tk.DISABLED, command=lambda: self.mostrar_confirmacion("bebedero", "pastel"), **estilo_sidebar)
+        self.btn_pastel_bebedero.pack(fill=tk.X)
+
+        # --- NUEVO BOTÓN COMPARADOR PERSONALIZADO ---
+        self.btn_comparador = tk.Button(self.frame_nav, text="⚖️  Comparador (2)", bg="#5E35B1", fg="white", activebackground="#4527A0", state=tk.DISABLED, command=self.mostrar_vista_seleccion_comparador, **estilo_sidebar)
+        self.btn_comparador.pack(fill=tk.X, pady=(0, 15))
+
+        sep = tk.Frame(self.frame_nav, bg="#E0E0E0", height=1)
+        sep.pack(fill=tk.X, pady=5)
+
+        self.btn_cargar = tk.Button(self.frame_nav, text="📂  Cargar CSV", bg="#FF9800", fg="white", activebackground="#F57C00", command=self.cargar_csv_interactivo, **estilo_sidebar)
+        self.btn_cargar.pack(fill=tk.X)
+
+        self.btn_comparar = tk.Button(self.frame_nav, text="🔄  Comparar Todo (4)", bg="#37474F", fg="white", activebackground="#263238", state=tk.DISABLED, command=self.mostrar_confirmacion_comparar, **estilo_sidebar)
+        self.btn_comparar.pack(side=tk.BOTTOM, fill=tk.X)
+
+        self.frame_contenido_base = tk.Frame(self.root, bg="#F0F2F5")
+        self.frame_contenido_base.grid(row=0, column=1, sticky="nsew", padx=15, pady=15)
+
+        self.frame_titulo_fijo = tk.Frame(self.frame_contenido_base, bg="#F0F2F5")
+        self.frame_titulo_fijo.pack(side=tk.TOP, fill=tk.X, pady=(10, 5))
+        
+        lbl_titulo = tk.Label(self.frame_titulo_fijo, text="Análisis INIFED", bg="#F0F2F5", fg="#102A43", font=("Segoe UI", 28, "bold"))
+        lbl_titulo.pack(anchor="w")
+        lbl_subtitulo = tk.Label(self.frame_titulo_fijo, text="Estadísticas 2020 - 2022", bg="#F0F2F5", fg="#757575", font=("Segoe UI", 12))
+        lbl_subtitulo.pack(anchor="w")
+
+        self.panel_dinamico = tk.Frame(self.frame_contenido_base, bg="#F0F2F5")
+        self.panel_dinamico.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        self.mostrar_vista_menu()
+    def cargar_csv_interactivo(self):
+        archivo = filedialog.askopenfilename(title="Seleccionar archivo CSV", filetypes=[("Archivos CSV", "*.csv"), ("Todos los archivos", "*.*")])
+        if archivo:
+            try:
+                df = pd.read_csv(archivo)
+                self.internet_urbano = len(df[(df['ambito'] == 'URBANO') & (df['internet'] == 'CON INTERNET')])
+                self.internet_rural = len(df[(df['ambito'] == 'RURAL') & (df['internet'] == 'CON INTERNET')])
+                self.bebedero_urbano = len(df[(df['ambito'] == 'URBANO') & (df['bebederos'] == 'CON BEBEDERO')])
+                self.bebedero_rural = len(df[(df['ambito'] == 'RURAL') & (df['bebederos'] == 'CON BEBEDERO')])
+                self.datos_procesados = True
+                
+                self.btn_internet.configure(state=tk.NORMAL, bg="#1976D2", activebackground="#1565C0")
+                self.btn_bebedero.configure(state=tk.NORMAL, bg="#00897B", activebackground="#00796B")
+                self.btn_pastel_internet.configure(state=tk.NORMAL, bg="#D81B60", activebackground="#C2185B")
+                self.btn_pastel_bebedero.configure(state=tk.NORMAL, bg="#8E24AA", activebackground="#7B1FA2")
+                
+                # Habilitar nuevas funciones
+                self.btn_comparador.configure(state=tk.NORMAL, bg="#5E35B1", activebackground="#4527A0")
+                self.btn_comparar.configure(state=tk.NORMAL, bg="#37474F", activebackground="#263238")
+                
+                self.mostrar_vista_menu()
+                messagebox.showinfo("Éxito", "CSV cargado correctamente.")
+            except Exception as e:
+                messagebox.showerror("Error de lectura", f"No se pudo leer el archivo CSV.\n{str(e)}")

@@ -172,3 +172,15 @@ class AppINIFED:
                 messagebox.showinfo("Éxito", "CSV cargado correctamente.")
             except Exception as e:
                 messagebox.showerror("Error de lectura", f"No se pudo leer el archivo CSV.\n{str(e)}")
+    def limpiar_panel_dinamico(self):
+        for anim in self.anims_activas:
+            try: anim.event_source.stop()
+            except: pass
+        self.anims_activas = []
+        for fig in self.figuras_activas:
+            plt.close(fig)
+        self.figuras_activas = []
+        if hasattr(self, 'panel_dinamico') and self.panel_dinamico:
+            self.panel_dinamico.destroy()
+        self.panel_dinamico = tk.Frame(self.frame_contenido_base, bg="#F0F2F5")
+        self.panel_dinamico.pack(side=tk.TOP, fill=tk.BOTH, expand=True)

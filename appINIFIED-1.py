@@ -328,3 +328,17 @@ class AppINIFED:
         canvas = FigureCanvasTkAgg(fig, master=master_frame)
         canvas.draw()
         canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+    def crear_grafica_pastel(self, master_frame, tipo):
+        valores, nombre = self.obtener_valores(tipo)
+        fig, ax = plt.subplots(figsize=(6, 5), dpi=100)
+        fig.patch.set_facecolor('#FFFFFF')
+        if sum(valores) > 0:
+            ax.pie(valores, labels=['Rural', 'Urbano'], colors=['#8D6E63', '#42A5F5'], autopct='%1.1f%%', startangle=90, pctdistance=0.6, textprops={'fontsize': 12, 'fontweight': 'bold'}, wedgeprops={'edgecolor': 'white', 'linewidth': 2})
+            ax.set_title(f'Pastel: {nombre}', fontsize=14, fontweight='bold', pad=15, color='#333333')
+        else:
+            ax.text(0.5, 0.5, 'Sin datos', ha='center', va='center', fontsize=14, color='#999999')
+            ax.axis('off')
+        self.figuras_activas.append(fig)
+        canvas = FigureCanvasTkAgg(fig, master=master_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)

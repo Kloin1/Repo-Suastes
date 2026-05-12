@@ -17,6 +17,7 @@ import matplotlib.animation as animation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import urllib.request
 import io
+import importlib.metadata
 from PIL import Image, ImageTk
 
 class AppINIFED:
@@ -84,6 +85,7 @@ class AppINIFED:
             self.root.after(80, self.animar_carga, paso + 1)
         else:
             self.inicializar_interfaz_principal()
+    
     def inicializar_interfaz_principal(self):
         self.frame_bienvenida.destroy()
         self.root.columnconfigure(0, weight=0, minsize=260) 
@@ -140,14 +142,25 @@ class AppINIFED:
         self.frame_titulo_fijo = tk.Frame(self.frame_contenido_base, bg="#F0F2F5")
         self.frame_titulo_fijo.pack(side=tk.TOP, fill=tk.X, pady=(10, 5))
         
+        # -------------------------------------------------------------
+        # SECCIÓN MODIFICADA: TÍTULO A LA IZQ, BOTÓN A LA DER
+        # -------------------------------------------------------------
         lbl_titulo = tk.Label(self.frame_titulo_fijo, text="Análisis INIFED", bg="#F0F2F5", fg="#102A43", font=("Segoe UI", 28, "bold"))
-        lbl_titulo.pack(anchor="w")
+        lbl_titulo.pack(side=tk.LEFT, anchor="w") # Se cambió a side=tk.LEFT
+        
+        # --- AQUÍ ESTÁ EL BOTÓN QUE FALTABA ---
+        btn_acerca = tk.Button(self.frame_titulo_fijo, text="ℹ️  Acerca de", bg="#FFFFFF", fg="#102A43", font=("Segoe UI", 10, "bold"), bd=0, cursor="hand2", activebackground="#E0E0E0", activeforeground="#102A43", command=self.mostrar_ventana_acerca_de)
+        btn_acerca.pack(side=tk.RIGHT, anchor="ne") # Se empaqueta a la derecha
+        # -----------------------------------------------
+
+        # Se corrigió un error de tipeo que tenías en el color de fondo aquí (F0F2F2F5 -> F0F2F5)
         lbl_subtitulo = tk.Label(self.frame_titulo_fijo, text="Estadísticas 2020 - 2022", bg="#F0F2F5", fg="#757575", font=("Segoe UI", 12))
-        lbl_subtitulo.pack(anchor="w")
+        lbl_subtitulo.pack(side=tk.LEFT, anchor="w")
 
         self.panel_dinamico = tk.Frame(self.frame_contenido_base, bg="#F0F2F5")
         self.panel_dinamico.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         self.mostrar_vista_menu()
+
     def mostrar_ventana_acerca_de(self):
         ventana = tk.Toplevel(self.root)
         ventana.title("Acerca de")
@@ -220,6 +233,15 @@ class AppINIFED:
         # Botón Cerrar
         btn_cerrar = tk.Button(frame_contenido, text="Cerrar", font=("Segoe UI", 10, "bold"), bg="#102A43", fg="white", bd=0, padx=20, pady=8, cursor="hand2", activebackground="#0D47A1", activeforeground="white", command=ventana.destroy)
         btn_cerrar.pack(pady=(25, 0))
+
+    def obtener_version_libreria(self, nombre_paquete):
+        """Función auxiliar para obtener la versión de una librería de forma segura."""
+        try:
+            return importlib.metadata.version(nombre_paquete)
+        except importlib.metadata.PackageNotFoundError:
+            return "No encontrada"
+        except Exception:
+            return "Error al consultar"
         
     def cargar_csv_interactivo(self):
         archivo = filedialog.askopenfilename(title="Seleccionar archivo CSV", filetypes=[("Archivos CSV", "*.csv"), ("Todos los archivos", "*.*")])

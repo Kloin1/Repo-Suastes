@@ -148,6 +148,79 @@ class AppINIFED:
         self.panel_dinamico = tk.Frame(self.frame_contenido_base, bg="#F0F2F5")
         self.panel_dinamico.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         self.mostrar_vista_menu()
+    def mostrar_ventana_acerca_de(self):
+        ventana = tk.Toplevel(self.root)
+        ventana.title("Acerca de")
+        ventana.geometry("500x580")
+        ventana.resizable(False, False)
+        ventana.configure(bg="#FFFFFF")
+        ventana.grab_set() # Hace que la ventana sea modal (bloquea la principal hasta que se cierre)
+        
+        # Contenedor principal con padding
+        frame_contenido = tk.Frame(ventana, bg="#FFFFFF", padx=30, pady=20)
+        frame_contenido.pack(fill=tk.BOTH, expand=True)
+        
+        # --- SECCIÓN 1: QUÉ HACE EL PROGRAMA ---
+        lbl_titulo_1 = tk.Label(frame_contenido, text="📋 Descripción de la Aplicación", bg="#FFFFFF", fg="#102A43", font=("Segoe UI", 13, "bold"))
+        lbl_titulo_1.pack(anchor="w", pady=(0, 5))
+        
+        sep_1 = tk.Frame(frame_contenido, bg="#E0E0E0", height=1)
+        sep_1.pack(fill=tk.X, pady=(0, 10))
+        
+        descripcion = (
+            "Esta aplicación permite cargar, procesar y visualizar datos estadísticos "
+            "del INIFED (2020-2022) mediante gráficos dinámicos de barras y pastel.\n\n"
+            "Ofrece herramientas interactivas para comparar el acceso a servicios como "
+            "Internet y Bebederos entre escuelas de ámbito Rural vs Urbano de manera rápida y profesional."
+        )
+        lbl_desc = tk.Label(frame_contenido, text=descripcion, bg="#FFFFFF", fg="#555555", font=("Segoe UI", 10), justify=tk.LEFT, wraplength=420)
+        lbl_desc.pack(anchor="w", pady=(0, 20))
+        
+        # --- SECCIÓN 2: PROGRAMADOR ---
+        lbl_titulo_2 = tk.Label(frame_contenido, text="👨‍💻 Desarrollador", bg="#FFFFFF", fg="#102A43", font=("Segoe UI", 13, "bold"))
+        lbl_titulo_2.pack(anchor="w", pady=(0, 5))
+        
+        sep_2 = tk.Frame(frame_contenido, bg="#E0E0E0", height=1)
+        sep_2.pack(fill=tk.X, pady=(0, 10))
+        
+        lbl_programador = tk.Label(frame_contenido, text="William Leandro Gonzalez Carrillo", bg="#F0F2F5", fg="#102A43", font=("Segoe UI", 12, "bold"), padx=15, pady=10, relief=tk.GROOVE, anchor="w", width=40)
+        lbl_programador.pack(anchor="w", pady=(0, 20))
+        
+        # --- SECCIÓN 3: LIBRERÍAS Y VERSIONES ---
+        lbl_titulo_3 = tk.Label(frame_contenido, text="🛠️ Librerías Utilizadas", bg="#FFFFFF", fg="#102A43", font=("Segoe UI", 13, "bold"))
+        lbl_titulo_3.pack(anchor="w", pady=(0, 5))
+        
+        sep_3 = tk.Frame(frame_contenido, bg="#E0E0E0", height=1)
+        sep_3.pack(fill=tk.X, pady=(0, 10))
+        
+        # Marco tipo tabla para las librerías
+        frame_libs = tk.Frame(frame_contenido, bg="#F8F9FA", highlightbackground="#E0E0E0", highlightthickness=1)
+        frame_libs.pack(fill=tk.X)
+        
+        # Cabecera de la tabla
+        tk.Label(frame_libs, text="Librería", bg="#102A43", fg="white", font=("Segoe UI", 10, "bold"), padx=10, pady=5, anchor="w", width=25).grid(row=0, column=0, sticky="ew")
+        tk.Label(frame_libs, text="Versión", bg="#102A43", fg="white", font=("Segoe UI", 10, "bold"), padx=10, pady=5, anchor="w", width=15).grid(row=0, column=1, sticky="ew")
+        
+        # Obtener versiones reales dinámicamente
+        librerias_info = [
+            ("Tkinter", f"{tk.TkVersion} (Built-in)"),
+            ("Pandas", self.obtener_version_libreria("pandas")),
+            ("Matplotlib", self.obtener_version_libreria("matplotlib")),
+            ("Pillow (PIL)", self.obtener_version_libreria("Pillow"))
+        ]
+        
+        for i, (nombre, version) in enumerate(librerias_info):
+            color_fila = "#FFFFFF" if i % 2 == 0 else "#F0F2F5"
+            tk.Label(frame_libs, text=nombre, bg=color_fila, fg="#333333", font=("Segoe UI", 10), padx=10, pady=6, anchor="w").grid(row=i+1, column=0, sticky="ew")
+            tk.Label(frame_libs, text=version, bg=color_fila, fg="#555555", font=("Segoe UI", 10), padx=10, pady=6, anchor="w").grid(row=i+1, column=1, sticky="ew")
+            
+        frame_libs.columnconfigure(0, weight=1)
+        frame_libs.columnconfigure(1, weight=1)
+        
+        # Botón Cerrar
+        btn_cerrar = tk.Button(frame_contenido, text="Cerrar", font=("Segoe UI", 10, "bold"), bg="#102A43", fg="white", bd=0, padx=20, pady=8, cursor="hand2", activebackground="#0D47A1", activeforeground="white", command=ventana.destroy)
+        btn_cerrar.pack(pady=(25, 0))
+        
     def cargar_csv_interactivo(self):
         archivo = filedialog.askopenfilename(title="Seleccionar archivo CSV", filetypes=[("Archivos CSV", "*.csv"), ("Todos los archivos", "*.*")])
         if archivo:
